@@ -112,4 +112,4 @@
   (tabulated-list-print)
   (use-local-map awsel/aws-mode-map))
 
-(provide 'awsel/aws)
+(provide 'awsel)
