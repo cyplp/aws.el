@@ -113,3 +113,4 @@
   (use-local-map awsel/aws-mode-map))
 
 (provide 'awsel)
+;;; awsel.el ends here
