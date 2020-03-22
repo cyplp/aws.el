@@ -13,7 +13,7 @@
 
 (setq lexical-binding t)
 
-(defun cyplp-aws-read-file (f)
+(defun awsel/aws-read-file (f)
   ;; Helper for read file
   (with-temp-buffer
     (insert-file-contents f)
@@ -25,7 +25,7 @@
       value
       ""))
 
-(defun  cyplp-aws-list-tabulated-list-entry (instance)
+(defun  awsel/aws-list-tabulated-list-entry (instance)
     (list (not-nil (alist-get 'Name instance))
           (vector
            (not-nil (alist-get 'Name instance))
@@ -36,11 +36,11 @@
 	   ;; (not-nil (alist-get 'LaunchTime instance))
 	   )))
 
-(defun cyplp-aws-list-tabulated-list-entries (instances)
-  (mapcar #'cyplp-aws-list-tabulated-list-entry instances))
+(defun awsel/aws-list-tabulated-list-entries (instances)
+  (mapcar #'awsel/aws-list-tabulated-list-entry instances))
 
 
-(defun cyplp-list-instances ()
+(defun awsel/list-instances ()
   (interactive)
   (message "Refreshing instances ...")
   (lexical-let ((aws-buf (get-buffer-create "*aws2*"))
@@ -58,8 +58,8 @@
        (when (memq (process-status process) '(exit signal))
          (with-current-buffer aws-buf
            (setq tabulated-list-entries
-                 (cyplp-aws-list-tabulated-list-entries
-                  (json-read-from-string (cyplp-aws-read-file f))))
+                 (awsel/aws-list-tabulated-list-entries
+                  (json-read-from-string (awsel/aws-read-file f))))
            (tabulated-list-print t)
 	   )
          (delete-file f)
@@ -67,37 +67,37 @@
          (message "Instances refreshed.")))
      )))
 
-(defun cyplp-ec2-instances ()
+(defun awsel/ec2-instances ()
   (interactive)
   (pop-to-buffer "*aws2*" nil)
-  (cyplp-aws-mode)
-  (cyplp-list-instances)
+  (awsel/aws-mode)
+  (awsel/list-instances)
   )
 
 (defun plop (&optional plop)
   (interactive "P")
-  (message "plop"))
+  (message plop))
 
-(defun cyplp-ec2-instance-detail (&optional plop)
+(defun awsel/ec2-instance-detail (&optional plop)
   (interactive "P")
-  (message "detail"))
+  (message (concat "arg is : " plop ".")))
 
 
-(defvar cyplp-aws-mode-mapprogn nil "Keymap for `cyplp-aws-mode'.")
+(defvar awsel/aws-mode-mapprogn nil "Keymap for `awsel/aws-mode'.")
 (progn
-  (setq cyplp-aws-mode-map (make-sparse-keymap))
-  (define-key cyplp-aws-mode-map (kbd "RET") 'cyplp-ec2-instance-detail)
-  (define-key cyplp-aws-mode-map (kbd "g") 'cyplp-list-instances)
-  (define-key cyplp-aws-mode-map (kbd "d") 'plop)
+  (setq awsel/aws-mode-map (make-sparse-keymap))
+  (define-key awsel/aws-mode-map (kbd "RET") 'awsel/ec2-instance-detail)
+  (define-key awsel/aws-mode-map (kbd "g") 'awsel/list-instances)
+  (define-key awsel/aws-mode-map (kbd "d") 'plop)
 )
 
 
-(define-derived-mode cyplp-aws-mode tabulated-list-mode "aws2" "aws2"
+(define-derived-mode awsel/aws-mode tabulated-list-mode "aws2" "aws2"
   (buffer-disable-undo)
   (kill-all-local-variables)
   (setq truncate-lines t)
   (setq mode-name "aws.el")
-  (setq major-mode 'cyplp-aws-mode)
+  (setq major-mode 'awsel/aws-mode)
   (hl-line-mode t)
   (setq tabulated-list-format [("Name" 45 t)
                                ("Type" 10 t)
@@ -110,6 +110,6 @@
   (setq tabulated-list-sort-key (cons "Name" nil))
   (tabulated-list-init-header)
   (tabulated-list-print)
-  (use-local-map cyplp-aws-mode-map))
+  (use-local-map awsel/aws-mode-map))
 
-(provide 'cyplp-aws)
+(provide 'awsel/aws)
