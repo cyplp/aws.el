@@ -73,23 +73,32 @@
   (cyplp-aws-mode)
   (cyplp-list-instances)
   )
-(defvar cyplp-aws-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "g") 'cyplp-list-instances)
-    map)
-  "Keymap for `cyplp-aws-mode'.")
+
+(defun plop (&optional plop)
+  (interactive "P")
+  (message "plop"))
+
+(defun cyplp-ec2-instance-detail (&optional plop)
+  (interactive "P")
+  (message "detail"))
 
 
+(defvar cyplp-aws-mode-mapprogn nil "Keymap for `cyplp-aws-mode'.")
+(progn
+  (setq cyplp-aws-mode-map (make-sparse-keymap))
+  (define-key cyplp-aws-mode-map (kbd "RET") 'cyplp-ec2-instance-detail)
+  (define-key cyplp-aws-mode-map (kbd "g") 'cyplp-list-instances)
+  (define-key cyplp-aws-mode-map (kbd "d") 'plop)
+)
 
-(define-derived-mode cyplp-aws-mode tabulated-list-mode "aws" "aws"
+
+(define-derived-mode cyplp-aws-mode tabulated-list-mode "aws2" "aws2"
   (buffer-disable-undo)
   (kill-all-local-variables)
   (setq truncate-lines t)
-  (setq mode-name "aws")
+  (setq mode-name "aws.el")
   (setq major-mode 'cyplp-aws-mode)
-  (use-local-map cyplp-aws-mode-map)
   (hl-line-mode t)
-
   (setq tabulated-list-format [("Name" 45 t)
                                ("Type" 10 t)
                                ("Status" 10 t)
@@ -100,6 +109,7 @@
   (setq tabulated-list-padding 2)
   (setq tabulated-list-sort-key (cons "Name" nil))
   (tabulated-list-init-header)
-  (tabulated-list-print))
+  (tabulated-list-print)
+  (use-local-map cyplp-aws-mode-map))
 
 (provide 'cyplp-aws)
