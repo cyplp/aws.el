@@ -13,20 +13,10 @@
 
 (setq lexical-binding t)
 
-(defun awsel/aws-read-file (f)
-  ;; Helper for read file
-  (with-temp-buffer
-    (insert-file-contents f)
-    (buffer-string)))
-
-(defun not-nil (value)
-  "Replace nil by empty string if value is nil."
-  (if value
-      value
-      ""))
+(load (expand-file-name "utils.el") nil nil t)
 
 (defun  awsel/aws-list-tabulated-list-entry (instance)
-    (list (not-nil (alist-get 'Name instance))
+    (list (not-nil (alist-get 'InstanceId instance))
           (vector
            (not-nil (alist-get 'Name instance))
            (not-nil (alist-get 'Type instance))
