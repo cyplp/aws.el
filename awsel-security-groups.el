@@ -51,7 +51,8 @@
   (define-key awsel/aws-security-groups-mode-map (kbd "RET") 'awsel/security-group-detail)
 )
 
-(defun security-group-detail ()
+(defun awsel/security-group-detail (&optional plop)
+  (interactive "P")
   (message "todo"))
 
 (define-derived-mode awsel/aws-security-groups-mode tabulated-list-mode "aws2-security-groups" "aws2-security-groups"
